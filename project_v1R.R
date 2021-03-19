@@ -29,14 +29,38 @@ df$Neighbourhood <- as.factor(df$Neighbourhood)
 
 df$Handcap <- as.factor(df$Handcap)
 
-#Create working data frame 
+#Renaming Columns:
+########################################
+df$No_show <- df$`No-show`
+df <- df %>% subset(select = -`No-show`)
+df$Hypertension <- df$Hipertension
+df <- df %>% subset(select = -Hipertension)
+df$Handicap <- df$Handcap
+df <- df %>% subset(select = -Handcap)
 
-df_v1 <- df
+########################################
+#End Renaming Columns
 
-View(df_v1)
+library(lubridate)
 
-write_csv(df_v1, "project_draft1.csv")
-write_excel_csv(df_v1, "project_draft1.1.csv")
+#Transform dates and add ScheduledDelay
+
+df$AppointmentDay = as.Date(df$AppointmentDay)
+df$ScheduledDate = as.date(df$ScheduledDay)
+df$ScheduledDelay = df$AppointmentDay - df$ScheduledDate
+df <- df %>% subset(select = -ScheduledDay)
+
+
+#Look for missing values  
+
+table(is.na(df$ScheduledDate))
+
+#None found
+
+# Data frame used for tableau visualizations 
+write_excel_csv(df, "project_draft1.2.csv")
+
+View(df)
 
 
 
@@ -95,6 +119,17 @@ df_v1$Age[df_v1$Age == '115']
 
 #Look for na's
 table(is.na(df_v1$Age))
+
+
+
+
+
+
+
+
+
+
+
 
 library(GGally)
 
