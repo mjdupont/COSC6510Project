@@ -99,6 +99,9 @@ df$Alcoholism <- as.logical(df$Alcoholism)
 #Presumed to be equal to sex?
 df$Gender <- as.factor(df$Gender)
 
+#Patient is handicapped
+df$Handicap <- as.logical(df$Handicap)
+
 ########################################
 #End Normalize data types:
 ########################################
@@ -112,6 +115,12 @@ df <-
   filter(ScheduledDelay >= 0) %>%
   filter(Handicap >= 0)
 
+########################################
+#Create partition for children under 18
+########################################
+age.df <- 
+  df %>%
+  filter(Age < 18 & Age > 0)
 
 ########################################
 #End Remove bad data:
